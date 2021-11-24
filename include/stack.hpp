@@ -20,6 +20,13 @@ public:
     Stack(){
         current = new StackElement;
         current->prev = nullptr;
+        current->value = T();
+    }
+
+    Stack(T value){
+        current = new StackElement;
+        current->prev = nullptr;
+        current->value = value;
     }
 
     void push(T&& value) {
@@ -35,15 +42,13 @@ public:
         current->value = value;
     };
 
-    T pop() {
+    void pop() {
         if (current->prev != nullptr) {
             auto tmp = current;
             current = current->prev;
             T val = tmp->value;
             delete tmp;
-            return val;
-        } else
-            return NULL;
+        }
     };
 
     const T& head() const{
