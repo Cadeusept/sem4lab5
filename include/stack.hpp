@@ -29,10 +29,13 @@ public:
     };
 
     void push(const T& value) {
-        auto old_el = current;
-        current = new StackElement();
-        current->prev = old_el;
-        current->value = value;
+        if constexpr (std::is_copy_assignable<T>::value) {
+            auto old_el = current;
+            current = new StackElement();
+            current->prev = old_el;
+            current->value = value;
+        } else
+            throw std::logic_error("Cannot assign, try to use push_embrace()");
     };
 
     T pop() {
