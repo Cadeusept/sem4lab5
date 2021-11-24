@@ -3,19 +3,36 @@
 #ifndef INCLUDE_STACK_HPP_
 #define INCLUDE_STACK_HPP_
 
+#include <algorithm>
+
+
 auto example() -> void;
 
 template <typename T>
 class Stack
 {
 public:
-    void push(T&& value);
+    Stack(const Stack&) = delete; //non-copyable
+    Stack& operator=(const Stack&) = delete;
+
+    Stack(Stack&&) = default; //moveable
+
+    Stack(){
+        current = new StackElement;
+        current->prev = nullptr;
+    }
+
+    void push(T&& value) {
+        auto old_el = current;
+        current->prev = old_el;
+        current->value = std::move(value);
+    };
 
     void push(const T& value) {
         auto old_el = current;
         current = new StackElement();
-        current->prev=old_el;
-        current->value=value;
+        current->prev = old_el;
+        current->value = value;
     };
 
     void pop() {
