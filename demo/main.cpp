@@ -1,5 +1,6 @@
 #include <stack.hpp>
 
 int main() {
-  example();
+  empty();
+  return 0;
 }

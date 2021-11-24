@@ -3,6 +3,6 @@
 #include <stack.hpp>
 #include <stdexcept>
 
-auto example() -> void {
-  throw std::runtime_error("not implemented");
+int empty() {
+  return 0;
 }

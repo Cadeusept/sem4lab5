@@ -6,7 +6,7 @@
 #include <algorithm>
 
 
-auto example() -> void;
+int empty();
 
 template <typename T>
 class Stack
