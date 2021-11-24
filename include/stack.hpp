@@ -20,6 +20,7 @@ public:
     Stack(){
         current = new StackElement;
         current->prev = nullptr;
+        current->value = T();
     }
 
     void push(T&& value) {
@@ -38,15 +39,21 @@ public:
             throw std::logic_error("Cannot assign, try to use push_embrace()");
     };
 
-    T pop() {
+    template <typename ...Args>
+    void push_embrace(const Args&&... values) {
+        if constexpr (!std::is_copy_assignable<T>::value) {
+            current = new StackElement(current, values...);
+        } else
+            throw std::logic_error("Can assign, try to use push()");
+    };
+
+    void pop() {
         if (current->prev != nullptr) {
             auto tmp = current;
             current = current->prev;
             T val = tmp->value;
             delete tmp;
-            return val;
-        } else
-            return NULL;
+        }
     };
 
     const T& head() const{
@@ -57,6 +64,11 @@ private:
     struct StackElement{
         StackElement* prev;
         T value;
+
+        template <typename ...Args>
+        StackElement(StackElement* a,Args&& ...values):
+                     prev(a), value(values...) {};
+
         StackElement() {
         }
     } *current;
