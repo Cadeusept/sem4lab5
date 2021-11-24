@@ -35,12 +35,15 @@ public:
         current->value = value;
     };
 
-    void pop() {
+    T pop() {
         if (current->prev != nullptr) {
-            auto tmp=current;
-            current=current->prev;
+            auto tmp = current;
+            current = current->prev;
+            T val = tmp->value;
             delete tmp;
-        }
+            return val;
+        } else
+            return NULL;
     };
 
     const T& head() const{
