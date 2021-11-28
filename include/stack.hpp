@@ -23,6 +23,15 @@ public:
         current->value = T();
     }
 
+    ~Stack(){
+        while (current->prev != nullptr){
+            auto tmp = current;
+            current = current->prev;
+            delete tmp;
+        }
+        delete current;
+    }
+
     void push(T&& value) {
         auto old_el = current;
         current->prev = old_el;
@@ -45,7 +54,7 @@ public:
             current = new StackElement(current, values...);
         } else
             throw std::logic_error("Can assign, try to use push()");
-    };
+    }
 
     void pop() {
         if (current->prev != nullptr) {
@@ -67,10 +76,9 @@ private:
 
         template <typename ...Args>
         StackElement(StackElement* a,Args&& ...values):
-                     prev(a), value(values...) {};
+                     prev(a), value(values...) {}
 
-        StackElement() {
-        }
+        StackElement() {}
     } *current;
 };
 

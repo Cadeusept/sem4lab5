@@ -5,6 +5,7 @@
 #include <stack.hpp>
 #include <stdexcept>
 
-TEST(Example, EmptyTest) {
-    EXPECT_THROW(example(), std::runtime_error);
+TEST(Equality, constructor) {
+    Stack<int> stack;
+    EXPECT_EQ(bool(stack.head()), false);
 }
