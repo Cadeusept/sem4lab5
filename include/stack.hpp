@@ -31,6 +31,7 @@ public:
 
     void push(T&& value) {
         auto old_el = current;
+        current = new StackElement();
         current->prev = old_el;
         current->value = std::move(value);
     };
@@ -46,8 +47,9 @@ public:
         if (current->prev != nullptr) {
             auto tmp = current;
             current = current->prev;
-            T val = tmp->value;
             delete tmp;
+        } else if (bool(current->value)) {
+            current->value = 0;
         }
     };
 
