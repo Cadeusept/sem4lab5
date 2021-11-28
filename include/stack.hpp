@@ -35,14 +35,7 @@ public:
         delete current;
     }
 
-    void push(T&& value) {
-        auto old_el = current;
-        current = new StackElement();
-        current->prev = old_el;
-        current->value = std::move(value);
-    }
-
-    void push(const T& value) {
+    void push(const T&& value) {
         if constexpr (std::is_copy_assignable<T>::value) {
             auto old_el = current;
             current = new StackElement();
