@@ -4,6 +4,7 @@
 #define INCLUDE_STACK_HPP_
 
 #include <algorithm>
+#include
 
 
 int empty();
@@ -20,7 +21,9 @@ public:
     Stack(){
         current = new StackElement;
         current->prev = nullptr;
-        current->value = T();
+        if constexpr (std::is_copy_assignable<T>::value) {
+            current->value = T();
+        }
     }
 
     ~Stack(){
@@ -34,9 +37,10 @@ public:
 
     void push(T&& value) {
         auto old_el = current;
+        current = new StackElement();
         current->prev = old_el;
         current->value = std::move(value);
-    };
+    }
 
     void push(const T& value) {
         if constexpr (std::is_copy_assignable<T>::value) {
@@ -45,11 +49,11 @@ public:
             current->prev = old_el;
             current->value = value;
         } else
-            throw std::logic_error("Cannot assign, try to use push_embrace()");
-    };
+            throw std::logic_error("Cannot assign, try to use push_emplace()");
+    }
 
     template <typename ...Args>
-    void push_embrace(const Args&&... values) {
+    void push_emplace(const Args&&... values) {
         if constexpr (!std::is_copy_assignable<T>::value) {
             current = new StackElement(current, values...);
         } else
@@ -58,16 +62,15 @@ public:
 
     void pop() {
         if (current->prev != nullptr) {
-            auto tmp = current;
-            current = current->prev;
-            T val = tmp->value;
-            delete tmp;
-        }
-    };
+	    auto temp = current;
+	    current = current->prev;
+	    delete temp;
+	}
+    }
 
     const T& head() const{
         return current->value;
-    };
+    }
 
 private:
     struct StackElement{
