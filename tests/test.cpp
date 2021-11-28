@@ -8,16 +8,13 @@
 TEST(Equality, Constructors_dectructors_head) {
     Stack<int> stack;
     EXPECT_EQ(bool(stack.head()),false);
-    stack.Stack<int>::~Stack<int>();
 
     Stack<int> stack1(1);
     EXPECT_EQ(stack1.head(),1);
-    stack1.Stack<int>::~Stack<int>();
 
 
     Stack<int> stack2(Stack<int>(2));
     EXPECT_EQ(stack2.head(),2);
-    stack2.Stack<int>::~Stack<int>();
 }
 
 TEST(Equality, Push_pop) {
