@@ -4,6 +4,7 @@
 #define INCLUDE_STACK_HPP_
 
 #include <algorithm>
+#include <utility>
 
 
 auto example() -> void;
@@ -23,7 +24,7 @@ public:
         current->value = T();
     }
 
-    Stack(T value){
+    explicit Stack(T value){
         current = new StackElement;
         current->prev = nullptr;
         current->value = value;
@@ -34,28 +35,28 @@ public:
         current = new StackElement();
         current->prev = old_el;
         current->value = std::move(value);
-    };
+    }
 
     void push(const T& value) {
         auto old_el = current;
         current = new StackElement();
         current->prev = old_el;
         current->value = value;
-    };
+    }
 
     void pop() {
         if (current->prev != nullptr) {
             auto tmp = current;
             current = current->prev;
             delete tmp;
-        } else if (bool(current->value)) {
+        } else if (current->value) {
             current->value = 0;
         }
-    };
+    }
 
     const T& head() const{
         return current->value;
-    };
+    }
 
 private:
     struct StackElement{
