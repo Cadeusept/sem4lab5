@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <stdexcept>
 
 
 int empty();
@@ -41,24 +42,26 @@ public:
             current = new StackElement();
             current->prev = old_el;
             current->value = value;
-        } else
+        } else {
             throw std::logic_error("Cannot assign, try to use push_emplace()");
+        }
     }
 
     template <typename ...Args>
     void push_emplace(const Args&&... values) {
         if constexpr (!std::is_copy_assignable<T>::value) {
             current = new StackElement(current, values...);
-        } else
-            throw std::logic_error("Can assign, try to use push()");
+        } else {
+          throw std::logic_error("Can assign, try to use push()");
+        }
     }
 
     void pop() {
         if (current->prev != nullptr) {
-	    auto temp = current;
-	    current = current->prev;
-	    delete temp;
-	}
+            auto temp = current;
+            current = current->prev;
+            delete temp;
+        }
     }
 
     const T& head() const{
@@ -71,7 +74,7 @@ private:
         T value;
 
         template <typename ...Args>
-        StackElement(StackElement* a,Args&& ...values):
+        StackElement(StackElement* a, Args&& ...values):
                      prev(a), value(values...) {}
 
         StackElement() {}
