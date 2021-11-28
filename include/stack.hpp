@@ -24,6 +24,15 @@ public:
         current->value = T();
     }
 
+    ~Stack(){
+        while (current->prev != nullptr){
+            auto tmp = current;
+            current = current->prev;
+            delete tmp;
+        }
+        delete current;
+    }
+
     explicit Stack(T value){
         current = new StackElement;
         current->prev = nullptr;
